@@ -1,4 +1,4 @@
-package com.cerve.co.cerveui.ui.theme
+package com.cerve.co.material3extension.designsystem
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
