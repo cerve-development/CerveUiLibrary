@@ -3,7 +3,6 @@ package com.cerve.co.material3extension.designsystem
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -55,6 +54,29 @@ fun ExtendedTheme(
         }
     )
 
+}
+
+object ExtendedTheme {
+
+    val colors: ColorScheme
+        @Composable
+        get() = MaterialTheme.colorScheme
+
+    val typography: Typography
+        @Composable
+        get() = MaterialTheme.typography
+
+    val shapes: Shapes
+        @Composable
+        get() = MaterialTheme.shapes
+
+    val spacing: Spaces
+        @Composable
+        get() = LocalSpaces.current
+
+    val sizes: Sizes
+        @Composable
+        get() = LocalSizes.current
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
