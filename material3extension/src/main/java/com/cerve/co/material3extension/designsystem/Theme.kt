@@ -20,7 +20,7 @@ fun ExtendedTheme(
 
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    typographyTheme: Typography = Typography,
+    typographyTheme: Typography = ExtendedTheme.typography,
     content: @Composable (Modifier) -> Unit
 ) {
 
