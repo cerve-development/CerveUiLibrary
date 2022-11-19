@@ -41,7 +41,8 @@ fun ExtendedTheme(
         systemUiController.apply {
             setSystemBarsColor(
                 color = Color.Transparent,
-                isNavigationBarContrastEnforced = false
+                isNavigationBarContrastEnforced = false,
+                darkIcons = !darkTheme
             )
         }
     }
