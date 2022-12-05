@@ -1,10 +1,12 @@
 package com.cerve.co.material3extension.designsystem
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-class Sizes (
+@Immutable
+class Sizes(
     val default: Dp = 0.dp,
     val xSmall: Dp = 2.dp,
     val small: Dp = 8.dp,

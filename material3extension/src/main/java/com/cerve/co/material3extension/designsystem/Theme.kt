@@ -4,7 +4,13 @@ import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.*
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Typography
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
@@ -14,16 +20,15 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun ExtendedTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     darkColorScheme: ColorScheme,
     lightColorScheme: ColorScheme,
-
+    modifier: Modifier = Modifier,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     typographyTheme: Typography = ExtendedTheme.typography,
-    content: @Composable (Modifier) -> Unit
+    content: @Composable (Modifier) -> Unit = { }
 ) {
-
     val systemUiController = rememberSystemUiController()
 
     val colorScheme = when {
@@ -31,7 +36,9 @@ fun ExtendedTheme(
             val context = LocalContext.current
             if (darkTheme) {
                 dynamicDarkColorScheme(context)
-            } else dynamicLightColorScheme(context)
+            } else {
+                dynamicLightColorScheme(context)
+            }
         }
         darkTheme -> darkColorScheme
         else -> lightColorScheme
@@ -51,10 +58,9 @@ fun ExtendedTheme(
         colorScheme = colorScheme,
         typography = typographyTheme,
         content = {
-            Surface { content(Modifier.systemBarsPadding()) }
+            Surface { content(modifier.systemBarsPadding()) }
         }
     )
-
 }
 
 object ExtendedTheme {
@@ -78,6 +84,10 @@ object ExtendedTheme {
     val sizes: Sizes
         @Composable
         get() = LocalSizes.current
+
+    val alphas: Alphas
+        @Composable
+        get() = LocalAlphas.current
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
