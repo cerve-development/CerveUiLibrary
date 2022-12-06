@@ -48,8 +48,8 @@ fun ExtendedTheme(
         systemUiController.apply {
             setSystemBarsColor(
                 color = Color.Transparent,
+                darkIcons = !darkTheme ,
                 isNavigationBarContrastEnforced = false,
-                darkIcons = !darkTheme
             )
         }
     }
@@ -58,7 +58,9 @@ fun ExtendedTheme(
         colorScheme = colorScheme,
         typography = typographyTheme,
         content = {
-            Surface { content(modifier.systemBarsPadding()) }
+            Surface(
+                color = colorScheme.background,
+            ) { content(modifier.systemBarsPadding()) }
         }
     )
 }
