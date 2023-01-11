@@ -1,6 +1,7 @@
 package com.cerve.co.material3extension.designsystem
 
 import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -12,10 +13,11 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -29,11 +31,10 @@ fun ExtendedTheme(
     typographyTheme: Typography = ExtendedTheme.typography,
     content: @Composable (Modifier) -> Unit = { }
 ) {
-    val systemUiController = rememberSystemUiController()
+    val context = LocalContext.current
 
     val colorScheme = when {
         dynamicColor && supportsDynamicTheming() -> {
-            val context = LocalContext.current
             if (darkTheme) {
                 dynamicDarkColorScheme(context)
             } else {
@@ -44,14 +45,22 @@ fun ExtendedTheme(
         else -> lightColorScheme
     }
 
-    SideEffect {
-        systemUiController.apply {
-            setSystemBarsColor(
-                color = Color.Transparent,
-                darkIcons = !darkTheme,
-                isNavigationBarContrastEnforced = false
-            )
+    val systemUiController = rememberSystemUiController()
+
+    LaunchedEffect(systemUiController, !darkTheme) {
+
+        (context as ComponentActivity).apply {
+            setDecorFitsSystemWindows(window, false)
         }
+
+        // Update all of the system bar colors to be transparent, and use
+        // dark icons if we're in light theme
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = !darkTheme,
+            isNavigationBarContrastEnforced = false
+        )
+
     }
 
     MaterialTheme(
@@ -78,10 +87,6 @@ object ExtendedTheme {
     val shapes: Shapes
         @Composable
         get() = MaterialTheme.shapes
-
-    val spacing: Spaces
-        @Composable
-        get() = LocalSpaces.current
 
     val sizes: Sizes
         @Composable
