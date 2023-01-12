@@ -13,7 +13,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -27,7 +27,8 @@ fun ExtendedTheme(
     modifier: Modifier = Modifier,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
+    useSystemBarsPadding: Boolean = true,
     typographyTheme: Typography = ExtendedTheme.typography,
     content: @Composable (Modifier) -> Unit = { }
 ) {
@@ -47,7 +48,7 @@ fun ExtendedTheme(
 
     val systemUiController = rememberSystemUiController()
 
-    LaunchedEffect(systemUiController, !darkTheme) {
+    DisposableEffect(systemUiController, !darkTheme) {
 
         (context as ComponentActivity).apply {
             setDecorFitsSystemWindows(window, false)
@@ -61,15 +62,20 @@ fun ExtendedTheme(
             isNavigationBarContrastEnforced = false
         )
 
+        onDispose {  }
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
         typography = typographyTheme,
         content = {
-            Surface(
-                color = colorScheme.background
-            ) { content(modifier.systemBarsPadding()) }
+            Surface(color = colorScheme.background) {
+                content(
+                    if (useSystemBarsPadding) {
+                        modifier.systemBarsPadding()
+                    } else modifier
+                )
+            }
         }
     )
 }
