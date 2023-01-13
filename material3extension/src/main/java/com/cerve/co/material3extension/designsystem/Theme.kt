@@ -5,15 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Typography
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,16 +15,13 @@ import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun ExtendedTheme(
+fun ThemeWrapper(
     darkColorScheme: ColorScheme,
     lightColorScheme: ColorScheme,
-    modifier: Modifier = Modifier,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
-    useSystemBarsPadding: Boolean = true,
-    typographyTheme: Typography = ExtendedTheme.typography,
-    content: @Composable (Modifier) -> Unit = { }
+    content: @Composable (ColorScheme) -> Unit = { _ -> }
 ) {
     val context = LocalContext.current
 
@@ -64,19 +54,64 @@ fun ExtendedTheme(
         )
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = typographyTheme,
-        content = {
-            Surface(color = colorScheme.background) {
-                content(
-                    if (useSystemBarsPadding) {
-                        modifier.systemBarsPadding()
-                    } else modifier
-                )
+    content(colorScheme)
+
+}
+
+@Composable
+fun ExtendedTheme(
+    darkColorScheme: ColorScheme,
+    lightColorScheme: ColorScheme,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = false,
+    content: @Composable (Modifier) -> Unit = { }
+) {
+
+    ThemeWrapper(
+        lightColorScheme = lightColorScheme,
+        darkColorScheme = darkColorScheme,
+        darkTheme = darkTheme,
+        dynamicColor = dynamicColor
+    ) { colorScheme ->
+        MaterialTheme(
+            colorScheme = colorScheme,
+            content = {
+                Surface(color = colorScheme.background) {
+                    content(Modifier)
+                }
             }
-        }
-    )
+        )
+    }
+
+}
+
+@Composable
+fun ExtendedSystemTheme(
+    darkColorScheme: ColorScheme,
+    lightColorScheme: ColorScheme,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = false,
+    content: @Composable (Modifier) -> Unit = { }
+) {
+
+    ThemeWrapper(
+        lightColorScheme = lightColorScheme,
+        darkColorScheme = darkColorScheme,
+        darkTheme = darkTheme,
+        dynamicColor = dynamicColor
+    ) { colorScheme ->
+        MaterialTheme(
+            colorScheme = colorScheme,
+            content = {
+                Surface(color = colorScheme.background) {
+                    content(Modifier.systemBarsPadding())
+                }
+            }
+        )
+    }
+
 }
 
 object ExtendedTheme {
