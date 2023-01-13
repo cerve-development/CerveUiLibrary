@@ -14,6 +14,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -48,7 +49,7 @@ fun ExtendedTheme(
 
     val systemUiController = rememberSystemUiController()
 
-    DisposableEffect(systemUiController, !darkTheme) {
+    LaunchedEffect(systemUiController, !darkTheme) {
 
         (context as ComponentActivity).apply {
             setDecorFitsSystemWindows(window, false)
@@ -61,8 +62,6 @@ fun ExtendedTheme(
             darkIcons = !darkTheme,
             isNavigationBarContrastEnforced = false
         )
-
-        onDispose {  }
     }
 
     MaterialTheme(
