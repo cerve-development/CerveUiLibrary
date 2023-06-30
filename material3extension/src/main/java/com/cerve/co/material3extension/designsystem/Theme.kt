@@ -1,5 +1,6 @@
 package com.cerve.co.material3extension.designsystem
 
+import android.app.Activity
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.annotation.ChecksSdkIntAtLeast
@@ -21,7 +22,10 @@ fun ThemeWrapper(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
-    content: @Composable (ColorScheme) -> Unit = { _ -> }
+    decorFitsSystemWindows: Boolean = false,
+    systemBarColor: Color = Color.Transparent,
+    isNavigationBarContrastEnforced: Boolean = false,
+    content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -39,77 +43,23 @@ fun ThemeWrapper(
 
     val systemUiController = rememberSystemUiController()
 
-    LaunchedEffect(systemUiController, !darkTheme) {
+    LaunchedEffect(Unit) {
 
-        (context as ComponentActivity).apply {
-            setDecorFitsSystemWindows(window, false)
+        (context as Activity).apply {
+            setDecorFitsSystemWindows(window, decorFitsSystemWindows)
         }
 
         // Update all of the system bar colors to be transparent, and use
         // dark icons if we're in light theme
         systemUiController.setSystemBarsColor(
-            color = Color.Transparent,
+            color = systemBarColor,
             darkIcons = !darkTheme,
-            isNavigationBarContrastEnforced = false
+            isNavigationBarContrastEnforced = isNavigationBarContrastEnforced
         )
     }
 
-    content(colorScheme)
-
-}
-
-@Composable
-fun ExtendedTheme(
-    darkColorScheme: ColorScheme,
-    lightColorScheme: ColorScheme,
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,
-    content: @Composable (Modifier) -> Unit = { }
-) {
-
-    ThemeWrapper(
-        lightColorScheme = lightColorScheme,
-        darkColorScheme = darkColorScheme,
-        darkTheme = darkTheme,
-        dynamicColor = dynamicColor
-    ) { colorScheme ->
-        MaterialTheme(
-            colorScheme = colorScheme,
-            content = {
-                Surface(color = colorScheme.background) {
-                    content(Modifier)
-                }
-            }
-        )
-    }
-
-}
-
-@Composable
-fun ExtendedSystemTheme(
-    darkColorScheme: ColorScheme,
-    lightColorScheme: ColorScheme,
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,
-    content: @Composable (Modifier) -> Unit = { }
-) {
-
-    ThemeWrapper(
-        lightColorScheme = lightColorScheme,
-        darkColorScheme = darkColorScheme,
-        darkTheme = darkTheme,
-        dynamicColor = dynamicColor
-    ) { colorScheme ->
-        MaterialTheme(
-            colorScheme = colorScheme,
-            content = {
-                Surface(color = colorScheme.background) {
-                    content(Modifier.systemBarsPadding())
-                }
-            }
-        )
+    MaterialTheme(colorScheme = colorScheme) {
+        content()
     }
 
 }
