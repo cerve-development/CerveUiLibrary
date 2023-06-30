@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.cerve.co.cerveui'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.cerve.co.cerveui"
         minSdk 26
-        targetSdk 34
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
