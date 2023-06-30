@@ -2,14 +2,11 @@ package com.cerve.co.material3extension.designsystem
 
 import android.app.Activity
 import android.os.Build
-import androidx.activity.ComponentActivity
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
@@ -78,11 +75,11 @@ object ExtendedTheme {
         @Composable
         get() = MaterialTheme.shapes
 
-    val sizes: Sizes
+    val sizes: Size
         @Composable
         get() = LocalSizes.current
 
-    val alphas: Alphas
+    val alphas: Alpha
         @Composable
         get() = LocalAlphas.current
 }
