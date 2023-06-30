@@ -22,7 +22,6 @@ import com.cerve.co.material3extension.designsystem.ExtendedTheme.colors
 
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
